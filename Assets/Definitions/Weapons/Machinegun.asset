@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55004b9b44ef2ad428b835e89373daa5, type: 3}
+  m_Name: Machinegun
+  m_EditorClassIdentifier: 
+  isAutomatic: 1
+  firingRate: 0.1
+  projectilesPerShot: 1
+  damagePerProjectile: 1
+  dispersion: 0.04
+  modelPrefab: {fileID: 1463643899446954731, guid: 18bcfcbcb16c5da418d6228d2cfb3212,
+    type: 3}
