@@ -10,7 +10,7 @@ public class AimController : MonoBehaviour
 
 	private CanvasScaler canvasScaler;
 
-	private void Start()
+	private void Awake()
 	{
 		canvasScaler = transform.GetComponentInParent<CanvasScaler>();
 	}

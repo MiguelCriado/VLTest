@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class WeaponController : MonoBehaviour
@@ -12,6 +11,8 @@ public class WeaponController : MonoBehaviour
 	[SerializeField] private Transform weaponLocation;
 	[SerializeField] private KeyCode shootButton;
 	[SerializeField] private LayerMask shootMask;
+	[SerializeField] private Light shootLight;
+	[SerializeField] private float lightTime;
 
 	private Weapon currentWeapon;
 	private WeaponModel currentModel;
@@ -33,6 +34,8 @@ public class WeaponController : MonoBehaviour
 		{
 			Shoot();
 		}
+
+		UpdateLight();
 	}
 
 	public void Shoot()
@@ -58,8 +61,15 @@ public class WeaponController : MonoBehaviour
 					health.Hurt(currentWeapon.DamagePerProjectile);
 				}
 			}
+
+			shootLight.transform.position = currentModel.Muzzle.position;
+			shootLight.gameObject.SetActive(true);
+
+			lastShootTime = Time.time;
 		}
 	}
+
+	
 
 	private void SwapWeapon()
 	{
@@ -76,6 +86,14 @@ public class WeaponController : MonoBehaviour
 			int newWeaponIndex = MathUtilities.Modulo(currentWeaponIndex + step, availableWeapons.Count);
 
 			MountWeapon(availableWeapons[newWeaponIndex]);
+		}
+	}
+
+	private void UpdateLight()
+	{
+		if (shootLight.gameObject.activeSelf && Time.time - lastShootTime > lightTime)
+		{
+			shootLight.gameObject.SetActive(false);
 		}
 	}
 
