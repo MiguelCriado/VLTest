@@ -15,6 +15,11 @@ public class Health : MonoBehaviour
 	[SerializeField] private int maxHealth;
 	[SerializeField] private int currentHealth;
 
+	public void Start()
+	{
+		currentHealth = maxHealth;
+	}
+
 	public void Hurt(int damage)
 	{
 		currentHealth -= damage;
