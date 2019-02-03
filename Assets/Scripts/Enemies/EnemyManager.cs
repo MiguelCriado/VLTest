@@ -75,22 +75,25 @@ public class EnemyManager : MonoBehaviour
 			}
 		}
 
-		Vector2 spawnPoint = Random.insideUnitCircle.normalized * spawnRadius;
-		Vector3 spawnPosition = new Vector3(spawnPoint.x, 0, spawnPoint.y);
-
-		Enemy newEnemy = Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
-		newEnemy.Initialize(player);
-		aliveEnemies.Add(newEnemy);
-
-		Health health = newEnemy.GetComponent<Health>();
-
-		if (health != null)
+		if (enemyToSpawn != null)
 		{
-			health.OnDeath += () =>
+			Vector2 spawnPoint = Random.insideUnitCircle.normalized * spawnRadius;
+			Vector3 spawnPosition = new Vector3(spawnPoint.x, 0, spawnPoint.y);
+
+			Enemy newEnemy = Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
+			newEnemy.Initialize(player);
+			aliveEnemies.Add(newEnemy);
+
+			Health health = newEnemy.GetComponent<Health>();
+
+			if (health != null)
 			{
-				Destroy(newEnemy.gameObject);
-				aliveEnemies.Remove(newEnemy);
-			};
+				health.OnDeath += () =>
+				{
+					Destroy(newEnemy.gameObject);
+					aliveEnemies.Remove(newEnemy);
+				};
+			}
 		}
 	}
 }

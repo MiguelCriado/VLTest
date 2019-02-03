@@ -65,6 +65,14 @@ public abstract class Enemy : MonoBehaviour
 		health.OnDeath -= OnDeath;
 	}
 
+	protected virtual void OnDestroy()
+	{
+		if (Claimer != null)
+		{
+			Destroy(Claimer.gameObject);
+		}
+	}
+
 	protected void Update()
 	{
 		currentState.CheckTransitions();

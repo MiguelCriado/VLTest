@@ -890,7 +890,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639613925}
-  m_LocalRotation: {x: -0, y: 0.99682474, z: -0.0796273, w: 0}
+  m_LocalRotation: {x: -0, y: 0.99682474, z: -0.07962728, w: 0}
   m_LocalPosition: {x: 0, y: 1.54, z: 2.891}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2499,14 +2499,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableEnemies:
   - Enemy: {fileID: 1509078226372534574, guid: 1a01ec7019252e2469899cc2e6d5e46b, type: 3}
-    Weight: 0
+    Weight: 4
   - Enemy: {fileID: 6878450641278505815, guid: d1a0bd3665b6b2d49a27a6ce59075fdb, type: 3}
-    Weight: 0
+    Weight: 2
   - Enemy: {fileID: 5539002592009194602, guid: 0bae022ff66564b4fbd5f71bce1e32fc, type: 3}
-    Weight: 1
+    Weight: 3
   boss: {fileID: 0}
   enemiesBeforeBoss: 10
-  maxEnemiesAlive: 5
+  maxEnemiesAlive: 10
   minTimeBetweenSpawns: 3
   maxTimeBetweenSpawns: 10
   spawnRadius: 20

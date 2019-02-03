@@ -2,7 +2,7 @@
 
 public class ClaimRightState : BaseEnemyState
 {
-	private static readonly Collider[] OverlapColliders;
+	private static readonly Collider[] OverlapColliders = new Collider[20];
 
 	private Transform claimerPrefab;
 	private int layerMask;
@@ -42,7 +42,9 @@ public class ClaimRightState : BaseEnemyState
 
 	public override void Update()
 	{
-		if (Physics.OverlapBoxNonAlloc(claimer.position, Vector3.one * context.Size, OverlapColliders, claimer.rotation, layerMask) == 0)
+		int hitCount = Physics.OverlapBoxNonAlloc(claimer.position, Vector3.one * context.Size, OverlapColliders, claimer.rotation, layerMask);
+
+		if (hitCount == 0 || CheckOtherObject(OverlapColliders, hitCount) == false)
 		{
 			context.Claimer = claimer;
 			claimer.gameObject.SetActive(true);
@@ -53,5 +55,23 @@ public class ClaimRightState : BaseEnemyState
 	public override void OnExit()
 	{
 
+	}
+
+	private bool CheckOtherObject(Collider[] colliders, int hitCount)
+	{
+		bool result = false;
+		int i = 0;
+
+		while (result == false && i < hitCount)
+		{
+			if (colliders[i].gameObject != context.gameObject)
+			{
+				result = true;
+			}
+
+			i++;
+		}
+
+		return result;
 	}
 }
