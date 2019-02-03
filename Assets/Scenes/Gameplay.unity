@@ -744,7 +744,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
-  m_LocalRotation: {x: 0.013681795, y: -0.0208018, z: 0.00028471276, w: 0.99969}
+  m_LocalRotation: {x: 0.01368177, y: -0.020801783, z: 0.000284712, w: 0.99969}
   m_LocalPosition: {x: 1.25, y: 0.76, z: -3.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -890,7 +890,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 639613925}
-  m_LocalRotation: {x: -0, y: 0.99682474, z: -0.07962727, w: 0}
+  m_LocalRotation: {x: -0, y: 0.99682474, z: -0.0796273, w: 0}
   m_LocalPosition: {x: 0, y: 1.54, z: 2.891}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -1394,7 +1394,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1259386459}
-  m_LocalRotation: {x: 0.013681795, y: -0.0208018, z: 0.00028471276, w: 0.99969}
+  m_LocalRotation: {x: 0.01368177, y: -0.020801783, z: 0.000284712, w: 0.99969}
   m_LocalPosition: {x: 1.25, y: 0.76, z: -3.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2499,6 +2499,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   availableEnemies:
   - Enemy: {fileID: 1509078226372534574, guid: 1a01ec7019252e2469899cc2e6d5e46b, type: 3}
+    Weight: 0
+  - Enemy: {fileID: 6878450641278505815, guid: d1a0bd3665b6b2d49a27a6ce59075fdb, type: 3}
     Weight: 1
   boss: {fileID: 0}
   enemiesBeforeBoss: 10
