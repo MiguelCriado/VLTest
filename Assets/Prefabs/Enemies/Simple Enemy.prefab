@@ -47,6 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eca40556533c504086c932420bee867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Claimer: {fileID: 0}
+  claimerPrefab: {fileID: 6471426728191743530, guid: 91a8094a879414943b33f0524761d065,
+    type: 3}
   hitParticles: {fileID: 8155084305170593128, guid: f5dbb3f73753b7c49b28a39461e792ff,
     type: 3}
   deathParticles: {fileID: 8155084305170593128, guid: bf15bff5d8db2be4b957665c48c57311,

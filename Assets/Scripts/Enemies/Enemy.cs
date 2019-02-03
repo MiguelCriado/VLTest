@@ -3,11 +3,13 @@
 [RequireComponent(typeof(Health), typeof(MeshRenderer))]
 public abstract class Enemy : MonoBehaviour
 {
+	public Transform Claimer;
 	public float Size { get { return size; } }
 
 	[Header("Prefabs")]
-	[SerializeField] private ParticleSystem hitParticles;
-	[SerializeField] private ParticleSystem deathParticles;
+	[SerializeField] protected Transform claimerPrefab;
+	[SerializeField] protected ParticleSystem hitParticles;
+	[SerializeField] protected ParticleSystem deathParticles;
 	[Header("Settings")]
 	[SerializeField] protected float size;
 	[SerializeField] protected int damageOnContact;

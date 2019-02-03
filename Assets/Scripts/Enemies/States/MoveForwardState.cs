@@ -50,6 +50,9 @@ public class MoveForwardState : BaseEnemyState
 
 	public override void OnExit()
 	{
-		
+		if (context.Claimer != null)
+		{
+			Object.Destroy(context.Claimer.gameObject);
+		}
 	}
 }
