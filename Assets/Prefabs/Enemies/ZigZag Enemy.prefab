@@ -9,13 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1509078226372534569}
-  - component: {fileID: 1509078226372534574}
+  - component: {fileID: 5539002592009194602}
   - component: {fileID: 1509078226372534568}
   - component: {fileID: 1509078226372534575}
   - component: {fileID: 1509078226372534572}
   - component: {fileID: 1509078226372534573}
   m_Layer: 10
-  m_Name: Simple Enemy
+  m_Name: ZigZag Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35,7 +35,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1509078226372534574
+--- !u!114 &5539002592009194602
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -44,7 +44,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1509078226372534562}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5eca40556533c504086c932420bee867, type: 3}
+  m_Script: {fileID: 11500000, guid: 2bcd151fab9607944a3bae3e9825d923, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Claimer: {fileID: 0}
@@ -57,8 +57,11 @@ MonoBehaviour:
   size: 1
   damageOnContact: 5
   stepTime: 1
-  aliveColor: {r: 0, g: 0.6853483, b: 1, a: 1}
+  aliveColor: {r: 1, g: 0.5152212, b: 0, a: 1}
   deadColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+  forwardSteps: 5
+  rightSteps: 5
+  leftSteps: 5
 --- !u!114 &1509078226372534568
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@
 public abstract class Enemy : MonoBehaviour
 {
 	public Transform Claimer;
+	public Transform Target { get { return target; } }
 	public float Size { get { return size; } }
 
 	[Header("Prefabs")]

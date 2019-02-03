@@ -1,6 +1,8 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class ClaimRightState : BaseEnemyState
+public class ClaimLeftState : BaseEnemyState
 {
 	private static readonly Collider[] OverlapColliders;
 
@@ -9,7 +11,7 @@ public class ClaimRightState : BaseEnemyState
 	private Transform claimer;
 	private bool isDone;
 
-	public ClaimRightState(Enemy context, Transform claimerPrefab) : base(context)
+	public ClaimLeftState(Enemy context, Transform claimerPrefab) : base(context)
 	{
 		this.claimerPrefab = claimerPrefab;
 		layerMask = 1 << LayerMask.NameToLayer("Enemy");
@@ -36,7 +38,7 @@ public class ClaimRightState : BaseEnemyState
 
 		claimer = Object.Instantiate(claimerPrefab, context.transform.position, context.transform.rotation);
 		claimer.localScale = Vector3.one * context.Size;
-		claimer.RotateAround(context.Target.position, Vector3.up, angle);
+		claimer.RotateAround(context.Target.position, -Vector3.up, angle);
 		claimer.gameObject.SetActive(false);
 	}
 
