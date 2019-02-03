@@ -2,14 +2,15 @@
 
 public class Health : MonoBehaviour
 {
-	public delegate void HealthDelegate(int healthChange, int resultingHealth);
+	public delegate void HurtDelegate(int healthChange, int resultingHealth, Vector3 contactPoint, Vector3 normal);
+	public delegate void HealDelegate(int healthChange, int resultingHealth);
 	public delegate void DeathDelegate();
 
 	public int MaxHealth { get { return maxHealth; } }
 	public int CurrentHealth { get { return currentHealth; } }
 
-	public event HealthDelegate OnHurt;
-	public event HealthDelegate OnHeal;
+	public event HurtDelegate OnHurt;
+	public event HealDelegate OnHeal;
 	public event DeathDelegate OnDeath;
 
 	[SerializeField] private int maxHealth;
@@ -20,11 +21,11 @@ public class Health : MonoBehaviour
 		currentHealth = maxHealth;
 	}
 
-	public void Hurt(int damage)
+	public void Hurt(int damage, Vector3 contactPoint, Vector3 normal)
 	{
 		currentHealth -= damage;
 
-		OnHurt?.Invoke(-damage, currentHealth);
+		OnHurt?.Invoke(-damage, currentHealth, contactPoint, normal);
 
 		if (currentHealth <= 0)
 		{

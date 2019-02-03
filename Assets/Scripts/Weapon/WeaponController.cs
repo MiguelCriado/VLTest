@@ -7,11 +7,15 @@ public class WeaponController : MonoBehaviour
 
 	public event WeaponChangeDelegate OnWeaponChange;
 
-	[SerializeField] private List<Weapon> availableWeapons;
+	[Header("Prefabs")]
+	[SerializeField] private LineRenderer bulletTrailPrefab;
+	[Header("References")]
+ 	[SerializeField] private List<Weapon> availableWeapons;
 	[SerializeField] private Transform weaponLocation;
+	[SerializeField] private Light shootLight;
+	[Header("Settings")]
 	[SerializeField] private KeyCode shootButton;
 	[SerializeField] private LayerMask shootMask;
-	[SerializeField] private Light shootLight;
 	[SerializeField] private float lightTime;
 
 	private Weapon currentWeapon;
@@ -49,16 +53,23 @@ public class WeaponController : MonoBehaviour
 				Vector2 shotOrigin = Random.insideUnitCircle * aimBound;
 				Vector3 screenPoint = new Vector3(Camera.main.pixelWidth / 2 + shotOrigin.x, Camera.main.scaledPixelHeight / 2 + shotOrigin.y, 0);
 				Ray ray = Camera.main.ScreenPointToRay(screenPoint);
-				RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, shootMask);
+				RaycastHit[] hits = Physics.RaycastAll(ray, 100, shootMask);
 
-				Debug.DrawRay(ray.origin, ray.direction * 100, Color.red, 0.5f);
+				LineRenderer line = Instantiate(bulletTrailPrefab);
+				line.SetPosition(0, currentModel.Muzzle.position);
 
 				if (hits.Length > 0)
 				{
 					RaycastHit firstHit = hits[0];
 
 					Health health = firstHit.collider.GetComponent<Health>();
-					health.Hurt(currentWeapon.DamagePerProjectile);
+					health.Hurt(currentWeapon.DamagePerProjectile, firstHit.point, firstHit.normal);
+
+					line.SetPosition(1, firstHit.point);
+				}
+				else
+				{
+					line.SetPosition(1, ray.origin + ray.direction.normalized * 100);
 				}
 			}
 
@@ -68,8 +79,6 @@ public class WeaponController : MonoBehaviour
 			lastShootTime = Time.time;
 		}
 	}
-
-	
 
 	private void SwapWeapon()
 	{

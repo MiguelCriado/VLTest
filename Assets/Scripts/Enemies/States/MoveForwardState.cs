@@ -42,6 +42,7 @@ public class MoveForwardState : BaseEnemyState
 			else
 			{
 				context.transform.localRotation = initialRotation;
+				context.transform.localPosition = new Vector3(context.transform.localPosition.x, context.Size / 2, context.transform.localPosition.z);
 				isDone = true;
 			}
 		}
