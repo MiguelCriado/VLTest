@@ -113,7 +113,7 @@ public abstract class Enemy : MonoBehaviour
 
 	private void OnHurt(int healthChange, int resultingHealth, Vector3 contactPoint, Vector3 normal, GameObject attacker)
 	{
-		ParticleSystem particles = Instantiate(hitParticles, contactPoint, Quaternion.identity);
+		ParticleSystem particles = Instantiate(hitParticles, contactPoint + normal.normalized * 0.2f, Quaternion.identity);
 		particles.transform.LookAt(contactPoint + normal);
 
 		var main = particles.main;
