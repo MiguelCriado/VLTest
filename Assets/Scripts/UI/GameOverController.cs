@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameOverController : MonoBehaviour
 {
 	[SerializeField] private Canvas canvas;
+	[SerializeField] private string menuScene;
 
 	private GameManager gameManager;
 
@@ -31,7 +32,7 @@ public class GameOverController : MonoBehaviour
 
 	public void GoToMenu()
 	{
-		// TODO  
+		SceneManager.LoadScene(menuScene);
 	}
 
 	private void OnGameStateChange(GameState lastState, GameState newState)

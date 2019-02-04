@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class VictoryController : MonoBehaviour
 {
 	[SerializeField] private Canvas canvas;
+	[SerializeField] private string menuScene;
 
 	private GameManager gameManager;
 
@@ -29,7 +30,7 @@ public class VictoryController : MonoBehaviour
 
 	public void GoToMenu()
 	{
-		// TODO  
+		SceneManager.LoadScene(menuScene);
 	}
 
 	private void OnGameStateChange(GameState lastState, GameState newState)

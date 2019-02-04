@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseController : MonoBehaviour
 {
 	[SerializeField] private Transform canvas;
+	[SerializeField] private string menuScene;
 
 	private GameManager gameManager;
 
@@ -28,7 +30,7 @@ public class PauseController : MonoBehaviour
 
 	public void GoToMenu()
 	{
-		// TODO  
+		SceneManager.LoadScene(menuScene);
 	}
 
 	private void OnGameStateChange(GameState lastState, GameState newState)

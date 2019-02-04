@@ -78,7 +78,7 @@ public class HudController : MonoBehaviour
 	private void OnPlayerHurt(int healthChange, int resultingHealth, Vector3 contactPoint, Vector3 normal, GameObject attacker)
 	{
 		healthSlider.value = resultingHealth;
-		healthText.text = string.Format("{0}/{1}", resultingHealth, healthSlider.maxValue);
+		healthText.text = string.Format("{0}/{1}", Mathf.Clamp(resultingHealth, healthSlider.minValue, healthSlider.maxValue), healthSlider.maxValue);
 	}
 
 	private void OnPlayerChangeWeapon(Weapon newWeapon)
