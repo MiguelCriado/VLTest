@@ -74,11 +74,11 @@ public class AimController : MonoBehaviour
 		}
 	}
 
-	private void OnWeaponChange(WeaponDefinition weapon)
+	private void OnWeaponChange(Weapon weapon)
 	{
 		if (canvasScaler != null)
 		{
-			float displacement = canvasScaler.referenceResolution.y * weapon.Dispersion;
+			float displacement = canvasScaler.referenceResolution.y * weapon.Definition.Dispersion;
 
 			topMarker.anchoredPosition = new Vector2(topMarker.anchoredPosition.x, displacement);
 			rightMarker.anchoredPosition = new Vector2(displacement, rightMarker.anchoredPosition.y);

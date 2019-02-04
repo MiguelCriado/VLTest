@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Shotgun
   m_EditorClassIdentifier: 
   isAutomatic: 1
-  firingRate: 0.5
+  firingRate: 1
   projectilesPerShot: 10
   damagePerProjectile: 3
   dispersion: 0.1

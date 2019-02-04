@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sniper
   m_EditorClassIdentifier: 
   isAutomatic: 1
-  firingRate: 1
+  firingRate: 2
   projectilesPerShot: 1
   damagePerProjectile: 10
   dispersion: 0.01

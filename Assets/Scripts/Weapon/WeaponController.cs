@@ -19,7 +19,6 @@ public class WeaponController : MonoBehaviour
 	[SerializeField] private float lightTime;
 
 	private Weapon currentWeapon;
-	private WeaponModel currentModel;
 	private float lastShootTime;
 	private GameManager gameManager;
 
@@ -42,7 +41,7 @@ public class WeaponController : MonoBehaviour
 		{
 			SwapWeapon();
 
-			if (Input.GetKeyDown(shootButton))
+			if (Input.GetKey(shootButton))
 			{
 				Shoot();
 			}
@@ -53,11 +52,12 @@ public class WeaponController : MonoBehaviour
 
 	public void Shoot()
 	{
-		if (currentWeapon != null)
+		if (currentWeapon != null && currentWeapon.IsReloaded)
 		{
-			float aimBound = Camera.main.pixelHeight * currentWeapon.Dispersion;
+			WeaponDefinition definition = currentWeapon.Definition; ;
+			float aimBound = Camera.main.pixelHeight * definition.Dispersion;
 
-			for (int i = 0; i < currentWeapon.ProjectilesPerShot; i++)
+			for (int i = 0; i < definition.ProjectilesPerShot; i++)
 			{
 				Vector2 shotOrigin = Random.insideUnitCircle * aimBound;
 				Vector3 screenPoint = new Vector3(Camera.main.pixelWidth / 2 + shotOrigin.x, Camera.main.scaledPixelHeight / 2 + shotOrigin.y, 0);
@@ -65,14 +65,14 @@ public class WeaponController : MonoBehaviour
 				RaycastHit[] hits = Physics.RaycastAll(ray, 100, shootMask);
 
 				LineRenderer line = Instantiate(bulletTrailPrefab);
-				line.SetPosition(0, currentModel.Muzzle.position);
+				line.SetPosition(0, currentWeapon.Muzzle.position);
 
 				if (hits.Length > 0)
 				{
 					RaycastHit firstHit = hits[0];
 
 					Health health = firstHit.collider.GetComponent<Health>();
-					health.Hurt(currentWeapon.DamagePerProjectile, firstHit.point, firstHit.normal, gameObject);
+					health.Hurt(definition.DamagePerProjectile, firstHit.point, firstHit.normal, gameObject);
 
 					line.SetPosition(1, firstHit.point);
 				}
@@ -82,9 +82,10 @@ public class WeaponController : MonoBehaviour
 				}
 			}
 
-			shootLight.transform.position = currentModel.Muzzle.position;
+			shootLight.transform.position = currentWeapon.Muzzle.position;
 			shootLight.gameObject.SetActive(true);
 
+			currentWeapon.LastShotTime = Time.time;
 			lastShootTime = Time.time;
 		}
 	}
@@ -117,13 +118,16 @@ public class WeaponController : MonoBehaviour
 
 	private void MountWeapon(Weapon weapon)
 	{
-		if (currentModel != null)
+		if (currentWeapon != null)
 		{
-			Destroy(currentModel.gameObject);
+			currentWeapon.gameObject.SetActive(false);
 		}
 
 		currentWeapon = weapon;
-		currentModel = Instantiate(weapon.ModelPrefab, weaponLocation);
+		currentWeapon.gameObject.SetActive(true);
+		currentWeapon.transform.SetParent(weaponLocation);
+		currentWeapon.transform.localPosition = Vector3.zero;
+		currentWeapon.transform.localRotation = Quaternion.identity;
 
 		OnWeaponChange?.Invoke(weapon);
 	}
