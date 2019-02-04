@@ -3,16 +3,25 @@ using UnityEngine.UI;
 
 public class AimController : MonoBehaviour
 {
+	[SerializeField] private Canvas canvas;
 	[SerializeField] private RectTransform topMarker;
 	[SerializeField] private RectTransform rightMarker;
 	[SerializeField] private RectTransform bottomMarker;
 	[SerializeField] private RectTransform leftMarker;
 
 	private CanvasScaler canvasScaler;
+	private GameManager gameManager;
 
 	private void Awake()
 	{
 		canvasScaler = transform.GetComponentInParent<CanvasScaler>();
+
+		if (canvasScaler == null)
+		{
+			canvasScaler = transform.GetComponentInChildren<CanvasScaler>();
+		}
+
+		gameManager = FindObjectOfType<GameManager>();
 	}
 
 	private void OnEnable()
@@ -28,6 +37,8 @@ public class AimController : MonoBehaviour
 				weaponController.OnWeaponChange += OnWeaponChange;
 			}
 		}
+
+		gameManager.OnGameStateChange += OnGameManagerStateChange;
 	}
 
 	private void OnDisable()
@@ -42,6 +53,24 @@ public class AimController : MonoBehaviour
 			{
 				weaponController.OnWeaponChange -= OnWeaponChange;
 			}
+		}
+
+		gameManager.OnGameStateChange -= OnGameManagerStateChange;
+	}
+
+	private void OnGameManagerStateChange(GameState lastState, GameState newState)
+	{
+		canvas.gameObject.SetActive(newState == GameState.Running);
+
+		if (newState == GameState.Running)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+		}
+		else
+		{
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
 		}
 	}
 

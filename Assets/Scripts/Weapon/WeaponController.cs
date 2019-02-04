@@ -21,6 +21,12 @@ public class WeaponController : MonoBehaviour
 	private Weapon currentWeapon;
 	private WeaponModel currentModel;
 	private float lastShootTime;
+	private GameManager gameManager;
+
+	private void Awake()
+	{
+		gameManager = FindObjectOfType<GameManager>();
+	}
 
 	private void Start()
 	{
@@ -32,14 +38,17 @@ public class WeaponController : MonoBehaviour
 
 	private void Update()
 	{
-		SwapWeapon();
-
-		if (Input.GetKeyDown(shootButton))
+		if (gameManager.GameState == GameState.Running)
 		{
-			Shoot();
-		}
+			SwapWeapon();
 
-		UpdateLight();
+			if (Input.GetKeyDown(shootButton))
+			{
+				Shoot();
+			}
+
+			UpdateLight();
+		}
 	}
 
 	public void Shoot()
@@ -63,7 +72,7 @@ public class WeaponController : MonoBehaviour
 					RaycastHit firstHit = hits[0];
 
 					Health health = firstHit.collider.GetComponent<Health>();
-					health.Hurt(currentWeapon.DamagePerProjectile, firstHit.point, firstHit.normal);
+					health.Hurt(currentWeapon.DamagePerProjectile, firstHit.point, firstHit.normal, gameObject);
 
 					line.SetPosition(1, firstHit.point);
 				}

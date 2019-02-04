@@ -15,44 +15,100 @@ public class EnemyManager : MonoBehaviour
 
 	private float lastSpawnTime;
 	private float nextSpawnInterval;
-
+	private int enemyCount;
+	private GameManager gameManager;
 	private List<Enemy> aliveEnemies;
-	private Transform player;
+	private Enemy bossInstance;
+	private GameObject player;
 
 	private void Awake()
 	{
 		aliveEnemies = new List<Enemy>();
 		lastSpawnTime = float.MinValue;
 		nextSpawnInterval = 0;
+		enemyCount = 0;
+
+		gameManager = FindObjectOfType<GameManager>();
+		player = GameObject.FindGameObjectWithTag("Player");
 	}
 
-	private void Start()
+	private void OnEnable()
 	{
-		GameObject go = GameObject.FindGameObjectWithTag("Player");
+		gameManager.OnGameStateChange += OnGameStateChange;
+	}
 
-		if (go != null)
-		{
-			player = go.transform;
-		}
+	private void OnDisable()
+	{
+		gameManager.OnGameStateChange -= OnGameStateChange;
+
 	}
 
 	private void Update()
 	{
-		UpdateSpawnCycle();
+		if (gameManager.GameState == GameState.Running)
+		{
+			UpdateSpawnCycle();
+		}
 	}
 
 	private void UpdateSpawnCycle()
 	{
 		if (aliveEnemies.Count < maxEnemiesAlive && Time.time > lastSpawnTime + nextSpawnInterval)
 		{
-			SpawnEnemy();
-			nextSpawnInterval = Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
-			lastSpawnTime = Time.time;
+			Enemy newEnemy = null;
+
+			if (enemyCount >= enemiesBeforeBoss && bossInstance == null)
+			{
+				bossInstance = SpawnEnemy(boss);
+
+				if (bossInstance != null)
+				{
+					newEnemy = bossInstance;
+
+					Health bossHealth = bossInstance.GetComponent<Health>();
+
+					if (bossHealth != null)
+					{
+						bossHealth.OnDeath += (GameObject attacker) => 
+						{
+							if (attacker != gameObject && attacker != bossInstance.gameObject)
+							{
+								gameManager.SetState(GameState.Victory);
+							}
+						};
+					}
+				}
+			}
+			else
+			{
+				newEnemy = SpawnRandomEnemy();
+			}
+
+			if (newEnemy != null)
+			{
+				aliveEnemies.Add(newEnemy);
+
+				Health health = newEnemy.GetComponent<Health>();
+
+				if (health != null)
+				{
+					health.OnDeath += (GameObject attacker) =>
+					{
+						Destroy(newEnemy.gameObject);
+						aliveEnemies.Remove(newEnemy);
+					};
+				}
+
+				enemyCount++;
+				nextSpawnInterval = Random.Range(minTimeBetweenSpawns, maxTimeBetweenSpawns);
+				lastSpawnTime = Time.time;
+			}
 		}
 	}
 
-	private void SpawnEnemy()
+	private Enemy SpawnRandomEnemy()
 	{
+		Enemy result = null;
 		int totalWeight = 0;
 
 		foreach (var entry in availableEnemies)
@@ -77,22 +133,37 @@ public class EnemyManager : MonoBehaviour
 
 		if (enemyToSpawn != null)
 		{
-			Vector2 spawnPoint = Random.insideUnitCircle.normalized * spawnRadius;
-			Vector3 spawnPosition = new Vector3(spawnPoint.x, 0, spawnPoint.y);
+			result = SpawnEnemy(enemyToSpawn);
+		}
 
-			Enemy newEnemy = Instantiate(enemyToSpawn, spawnPosition, Quaternion.identity);
-			newEnemy.Initialize(player);
-			aliveEnemies.Add(newEnemy);
+		return result;
+	}
 
-			Health health = newEnemy.GetComponent<Health>();
+	public Enemy SpawnEnemy(Enemy enemyPrefab)
+	{
+		Enemy result = null;
+		Vector2 spawnPoint = Random.insideUnitCircle.normalized * spawnRadius;
+		Vector3 spawnPosition = new Vector3(spawnPoint.x, 0, spawnPoint.y);
 
-			if (health != null)
+		result = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+		result.Initialize(player.transform);
+
+		return result;
+	}
+
+	private void OnGameStateChange(GameState lastState, GameState newState)
+	{
+		if (newState == GameState.Victory)
+		{
+			while (aliveEnemies.Count > 0)
 			{
-				health.OnDeath += () =>
+				Enemy enemy = aliveEnemies[aliveEnemies.Count - 1];
+				Health health = enemy.GetComponent<Health>();
+
+				if (health != null)
 				{
-					Destroy(newEnemy.gameObject);
-					aliveEnemies.Remove(newEnemy);
-				};
+					health.Hurt(health.CurrentHealth, enemy.transform.position, Vector3.up, gameObject);
+				}
 			}
 		}
 	}

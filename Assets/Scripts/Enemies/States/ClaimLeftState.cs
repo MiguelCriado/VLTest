@@ -38,13 +38,13 @@ public class ClaimLeftState : BaseEnemyState
 
 		claimer = Object.Instantiate(claimerPrefab, context.transform.position, context.transform.rotation);
 		claimer.localScale = Vector3.one * context.Size;
-		claimer.RotateAround(context.Target.position, -Vector3.up, angle);
+		claimer.RotateAround(context.Target.position, Vector3.up, angle);
 		claimer.gameObject.SetActive(false);
 	}
 
 	public override void Update()
 	{
-		int hitCount = Physics.OverlapBoxNonAlloc(claimer.position, Vector3.one * context.Size, OverlapColliders, claimer.rotation, layerMask);
+		int hitCount = Physics.OverlapBoxNonAlloc(claimer.position, Vector3.one * context.Size / 2, OverlapColliders, claimer.rotation, layerMask);
 
 		if (hitCount == 0 || CheckOtherObject(OverlapColliders, hitCount) == false)
 		{

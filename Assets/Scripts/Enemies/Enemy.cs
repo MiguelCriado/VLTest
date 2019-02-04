@@ -87,10 +87,10 @@ public abstract class Enemy : MonoBehaviour
 
 			if (targetHealth != null)
 			{
-				targetHealth.Hurt(damageOnContact, collision.GetContact(0).point, collision.GetContact(0).normal);
+				targetHealth.Hurt(damageOnContact, collision.GetContact(0).point, collision.GetContact(0).normal, gameObject);
 			}
 
-			health.Hurt(health.CurrentHealth, transform.position, Vector3.up);
+			health.Hurt(health.CurrentHealth, transform.position, Vector3.up, gameObject);
 		}
 	}
 
@@ -111,7 +111,7 @@ public abstract class Enemy : MonoBehaviour
 
 	protected abstract IEnemyState InitializeStates();
 
-	private void OnHurt(int healthChange, int resultingHealth, Vector3 contactPoint, Vector3 normal)
+	private void OnHurt(int healthChange, int resultingHealth, Vector3 contactPoint, Vector3 normal, GameObject attacker)
 	{
 		ParticleSystem particles = Instantiate(hitParticles, contactPoint, Quaternion.identity);
 		particles.transform.LookAt(contactPoint + normal);
@@ -123,7 +123,7 @@ public abstract class Enemy : MonoBehaviour
 		RefreshColor();
 	}
 
-	private void OnDeath()
+	private void OnDeath(GameObject attacker)
 	{
 		ParticleSystem particles = Instantiate(deathParticles, transform.position, transform.rotation);
 		particles.transform.localScale = transform.localScale;

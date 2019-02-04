@@ -55,7 +55,7 @@ MonoBehaviour:
   deathParticles: {fileID: 8155084305170593128, guid: bf15bff5d8db2be4b957665c48c57311,
     type: 3}
   size: 1
-  damageOnContact: 5
+  damageOnContact: 3
   stepTime: 1
   aliveColor: {r: 1, g: 0.5152212, b: 0, a: 1}
   deadColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}

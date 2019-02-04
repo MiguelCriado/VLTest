@@ -31,7 +31,7 @@ public class ClaimForwardState : BaseEnemyState
 
 	public override void Update()
 	{
-		int hitCount = Physics.OverlapBoxNonAlloc(position, Vector3.one * context.Size, OverlapColliders, rotation, layerMask);
+		int hitCount = Physics.OverlapBoxNonAlloc(position, Vector3.one * context.Size / 2, OverlapColliders, rotation, layerMask);
 
 		if (hitCount == 0 || CheckOtherObject(OverlapColliders, hitCount) == false)
 		{

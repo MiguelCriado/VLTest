@@ -2,9 +2,9 @@
 
 public class Health : MonoBehaviour
 {
-	public delegate void HurtDelegate(int healthChange, int resultingHealth, Vector3 contactPoint, Vector3 normal);
+	public delegate void HurtDelegate(int healthChange, int resultingHealth, Vector3 contactPoint, Vector3 normal, GameObject attacker);
 	public delegate void HealDelegate(int healthChange, int resultingHealth);
-	public delegate void DeathDelegate();
+	public delegate void DeathDelegate(GameObject attacker);
 
 	public int MaxHealth { get { return maxHealth; } }
 	public int CurrentHealth { get { return currentHealth; } }
@@ -21,15 +21,15 @@ public class Health : MonoBehaviour
 		currentHealth = maxHealth;
 	}
 
-	public void Hurt(int damage, Vector3 contactPoint, Vector3 normal)
+	public void Hurt(int damage, Vector3 contactPoint, Vector3 normal, GameObject attacker)
 	{
 		currentHealth -= damage;
 
-		OnHurt?.Invoke(-damage, currentHealth, contactPoint, normal);
+		OnHurt?.Invoke(-damage, currentHealth, contactPoint, normal, attacker);
 
 		if (currentHealth <= 0)
 		{
-			OnDeath?.Invoke();
+			OnDeath?.Invoke(attacker);
 		}
 	}
 
