@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class MoveRightState : BaseEnemyState
 {
@@ -48,7 +46,7 @@ public class MoveRightState : BaseEnemyState
 			if (initialTime + stepTime > Time.time)
 			{
 				context.transform.RotateAround(pivot, -context.transform.forward, edgeRotationSpeed * Time.deltaTime);
-				context.transform.RotateAround(pivot, -context.transform.up, upRotationSpeed * Time.deltaTime);
+				context.transform.RotateAround(pivot, -Vector3.up, upRotationSpeed * Time.deltaTime);
 			}
 			else
 			{
