@@ -3752,6 +3752,7 @@ MonoBehaviour:
   cullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  allowShooting: 1
 --- !u!4 &927991735
 Transform:
   m_ObjectHideFlags: 0
@@ -5640,6 +5641,7 @@ MonoBehaviour:
   cullingMask:
     serializedVersion: 2
     m_Bits: 3383
+  allowShooting: 1
 --- !u!1 &1564300487
 GameObject:
   m_ObjectHideFlags: 0
@@ -6490,6 +6492,7 @@ MonoBehaviour:
   cullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+  allowShooting: 0
 --- !u!4 &1972080812
 Transform:
   m_ObjectHideFlags: 0

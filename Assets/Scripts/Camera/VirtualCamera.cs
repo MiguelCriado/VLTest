@@ -4,6 +4,7 @@ public class VirtualCamera : MonoBehaviour
 {
 	public Transform CameraMount { get { return cameraMount; } }
 	public LayerMask CullingMask { get { return cullingMask; } }
+	public bool AllowShooting { get { return allowShooting; } }
 
 	[Header("References")]
 	[SerializeField] private Transform rotationJoint;
@@ -12,6 +13,7 @@ public class VirtualCamera : MonoBehaviour
 	[Header("Settings")]
 	[SerializeField] private Vector2 rotationFactor;
 	[SerializeField] private LayerMask cullingMask;
+	[SerializeField] private bool allowShooting;
 
 	private void LateUpdate()
 	{

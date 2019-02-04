@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+	public delegate void CameraChangeDelegate(VirtualCamera camera);
+
+	public VirtualCamera ActiveCamera { get; private set; }
+
+	public event CameraChangeDelegate OnCameraChange = delegate { };
+
 	[Header("References")]
 	[SerializeField] private Camera camera;
 	[SerializeField] private List<VirtualCamera> mainCameraList;
@@ -14,10 +20,12 @@ public class CameraController : MonoBehaviour
 
 	private int currentCameraIndex;
 	private bool usingAuxiliarCamera;
+	private GameManager gameManager;
 
 	private void Awake()
 	{
 		currentCameraIndex = 0;
+		gameManager = FindObjectOfType<GameManager>();
 	}
 
 	private void Start()
@@ -27,9 +35,12 @@ public class CameraController : MonoBehaviour
 
 	private void Update()
 	{
-		ToggleAuxiliarCamera();
-		SwapCamera();
-		RotateCamera();
+		if (gameManager == null || gameManager.GameState == GameState.Running)
+		{
+			ToggleAuxiliarCamera();
+			SwapCamera();
+			RotateCamera();
+		}
 	}
 
 	private void ToggleAuxiliarCamera()
@@ -67,25 +78,27 @@ public class CameraController : MonoBehaviour
 
 	private void ActivateCamera(int cameraIndex)
 	{
-		VirtualCamera activeCamera = null;
+		ActiveCamera = null;
 
 		for (int i = 0; i < mainCameraList.Count; i++)
 		{
 			if (i == cameraIndex)
 			{
-				activeCamera = mainCameraList[i];
+				ActiveCamera = mainCameraList[i];
 				currentCameraIndex = i;
 			}
 		}
 
 		if (cameraIndex == -1)
 		{
-			activeCamera = auxiliarCamera;
+			ActiveCamera = auxiliarCamera;
 		}
 
-		camera.transform.SetParent(activeCamera.CameraMount);
+		camera.transform.SetParent(ActiveCamera.CameraMount);
 		camera.transform.localPosition = Vector3.zero;
 		camera.transform.localRotation = Quaternion.identity;
-		camera.cullingMask = activeCamera.CullingMask;
+		camera.cullingMask = ActiveCamera.CullingMask;
+
+		OnCameraChange?.Invoke(ActiveCamera);
 	}
 }

@@ -11,6 +11,7 @@ public class AimController : MonoBehaviour
 
 	private CanvasScaler canvasScaler;
 	private GameManager gameManager;
+	private CameraController cameraController;
 
 	private void Awake()
 	{
@@ -22,9 +23,59 @@ public class AimController : MonoBehaviour
 		}
 
 		gameManager = FindObjectOfType<GameManager>();
+		cameraController = FindObjectOfType<CameraController>();
 	}
 
 	private void OnEnable()
+	{
+		SubscribeEvents();
+	}
+
+	private void OnDisable()
+	{
+		UnsubscribeEvents();
+	}
+
+	private void OnGameManagerStateChange(GameState lastState, GameState newState)
+	{
+		RefreshVisibility();
+	}
+
+	private void OnWeaponChange(Weapon weapon)
+	{
+		if (canvasScaler != null)
+		{
+			float displacement = canvasScaler.referenceResolution.y * weapon.Definition.Dispersion;
+
+			topMarker.anchoredPosition = new Vector2(topMarker.anchoredPosition.x, displacement);
+			rightMarker.anchoredPosition = new Vector2(displacement, rightMarker.anchoredPosition.y);
+			bottomMarker.anchoredPosition = new Vector2(bottomMarker.anchoredPosition.x, -displacement);
+			leftMarker.anchoredPosition = new Vector2(-displacement, leftMarker.anchoredPosition.y);
+		}
+	}
+
+	private void OnCameraChange(VirtualCamera camera)
+	{
+		RefreshVisibility();
+	}
+
+	private void RefreshVisibility()
+	{
+		canvas.gameObject.SetActive(gameManager.GameState == GameState.Running && (cameraController.ActiveCamera == null || cameraController.ActiveCamera.AllowShooting));
+
+		if (gameManager.GameState == GameState.Running)
+		{
+			Cursor.lockState = CursorLockMode.Locked;
+			Cursor.visible = false;
+		}
+		else
+		{
+			Cursor.lockState = CursorLockMode.None;
+			Cursor.visible = true;
+		}
+	}
+
+	private void SubscribeEvents()
 	{
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 
@@ -38,10 +89,18 @@ public class AimController : MonoBehaviour
 			}
 		}
 
-		gameManager.OnGameStateChange += OnGameManagerStateChange;
+		if (gameManager != null)
+		{
+			gameManager.OnGameStateChange += OnGameManagerStateChange;
+		}
+
+		if (cameraController != null)
+		{
+			cameraController.OnCameraChange += OnCameraChange;
+		}
 	}
 
-	private void OnDisable()
+	private void UnsubscribeEvents()
 	{
 		GameObject player = GameObject.FindGameObjectWithTag("Player");
 
@@ -55,35 +114,14 @@ public class AimController : MonoBehaviour
 			}
 		}
 
-		gameManager.OnGameStateChange -= OnGameManagerStateChange;
-	}
-
-	private void OnGameManagerStateChange(GameState lastState, GameState newState)
-	{
-		canvas.gameObject.SetActive(newState == GameState.Running);
-
-		if (newState == GameState.Running)
+		if (gameManager != null)
 		{
-			Cursor.lockState = CursorLockMode.Locked;
-			Cursor.visible = false;
+			gameManager.OnGameStateChange -= OnGameManagerStateChange;
 		}
-		else
-		{
-			Cursor.lockState = CursorLockMode.None;
-			Cursor.visible = true;
-		}
-	}
 
-	private void OnWeaponChange(Weapon weapon)
-	{
-		if (canvasScaler != null)
+		if (cameraController != null)
 		{
-			float displacement = canvasScaler.referenceResolution.y * weapon.Definition.Dispersion;
-
-			topMarker.anchoredPosition = new Vector2(topMarker.anchoredPosition.x, displacement);
-			rightMarker.anchoredPosition = new Vector2(displacement, rightMarker.anchoredPosition.y);
-			bottomMarker.anchoredPosition = new Vector2(bottomMarker.anchoredPosition.x, -displacement);
-			leftMarker.anchoredPosition = new Vector2(-displacement, leftMarker.anchoredPosition.y);
+			cameraController.OnCameraChange += OnCameraChange;
 		}
 	}
 }

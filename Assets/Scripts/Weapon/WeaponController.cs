@@ -22,10 +22,12 @@ public class WeaponController : MonoBehaviour
 	private Weapon currentWeapon;
 	private float lastShootTime;
 	private GameManager gameManager;
+	private CameraController cameraController;
 
 	private void Awake()
 	{
 		gameManager = FindObjectOfType<GameManager>();
+		cameraController = FindObjectOfType<CameraController>();
 	}
 
 	private void Start()
@@ -56,7 +58,7 @@ public class WeaponController : MonoBehaviour
 
 	public void Shoot()
 	{
-		if (currentWeapon != null)
+		if (currentWeapon != null && (cameraController == null || cameraController.ActiveCamera.AllowShooting))
 		{
 			WeaponDefinition definition = currentWeapon.Definition; ;
 			float aimBound = Camera.main.pixelHeight * definition.Dispersion;
@@ -114,7 +116,7 @@ public class WeaponController : MonoBehaviour
 
 	private void UpdateWeaponRotation()
 	{
-		if (currentWeapon != null)
+		if (currentWeapon != null && (cameraController == null || cameraController.ActiveCamera.AllowShooting))
 		{
 			Vector3 screenPoint = new Vector3(Camera.main.pixelWidth / 2, Camera.main.scaledPixelHeight / 2, 0);
 			Ray ray = Camera.main.ScreenPointToRay(screenPoint);
