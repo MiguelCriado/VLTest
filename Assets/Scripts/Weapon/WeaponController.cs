@@ -112,6 +112,23 @@ public class WeaponController : MonoBehaviour
 
 			MountWeapon(availableWeapons[newWeaponIndex]);
 		}
+		else
+		{
+			Weapon newWeapon = null;
+
+			foreach (var weapon in availableWeapons)
+			{
+				if (Input.GetKeyDown(weapon.SwitchCode))
+				{
+					newWeapon = weapon;
+				}
+			}
+
+			if (newWeapon != null && newWeapon != currentWeapon)
+			{
+				MountWeapon(newWeapon);
+			}
+		}
 	}
 
 	private void UpdateWeaponRotation()

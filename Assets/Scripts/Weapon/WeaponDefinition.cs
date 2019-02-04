@@ -8,12 +8,10 @@ public class WeaponDefinition : ScriptableObject
 	public int ProjectilesPerShot { get { return projectilesPerShot; } }
 	public int DamagePerProjectile { get { return damagePerProjectile; } }
 	public float Dispersion { get { return dispersion; } }
-	public Weapon ModelPrefab { get { return modelPrefab; } }
 
 	[SerializeField] private bool isAutomatic;
 	[SerializeField] private float firingRate;
 	[SerializeField] private int projectilesPerShot;
 	[SerializeField] private int damagePerProjectile;
 	[SerializeField] private float dispersion;
-	[SerializeField] private Weapon modelPrefab;
 }

@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAutomatic: 1
   firingRate: 1
-  projectilesPerShot: 10
-  damagePerProjectile: 3
+  projectilesPerShot: 7
+  damagePerProjectile: 2
   dispersion: 0.1
   modelPrefab: {fileID: 7200118963488735748, guid: 610e7cf0df967c240a7a628f935fd119,
     type: 3}

@@ -3749,6 +3749,8 @@ MonoBehaviour:
   cameraMount: {fileID: 679603172}
   target: {fileID: 305342614}
   rotationFactor: {x: -100, y: 0}
+  minRotation: {x: -57.204, y: 0}
+  maxRotation: {x: 46.77, y: 0}
   cullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -5638,6 +5640,8 @@ MonoBehaviour:
   cameraMount: {fileID: 1987619368}
   target: {fileID: 305342614}
   rotationFactor: {x: -100, y: 0}
+  minRotation: {x: -90, y: 0}
+  maxRotation: {x: 76.462, y: 0}
   cullingMask:
     serializedVersion: 2
     m_Bits: 3383
@@ -6489,6 +6493,8 @@ MonoBehaviour:
   cameraMount: {fileID: 1269065359}
   target: {fileID: 305342614}
   rotationFactor: {x: 0, y: 0}
+  minRotation: {x: 0, y: 0}
+  maxRotation: {x: 0, y: 0}
   cullingMask:
     serializedVersion: 2
     m_Bits: 4294967295

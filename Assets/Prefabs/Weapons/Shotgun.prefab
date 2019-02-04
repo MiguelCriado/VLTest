@@ -234,6 +234,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   muzzle: {fileID: 5590375751259736775}
   definition: {fileID: 11400000, guid: fc93f1819d36b8b4b85bd56f7ad160a4, type: 2}
+  switchCode: 50
 --- !u!1 &6673762354710691147
 GameObject:
   m_ObjectHideFlags: 0
