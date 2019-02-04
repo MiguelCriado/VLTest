@@ -17,6 +17,7 @@ public class WeaponController : MonoBehaviour
 	[SerializeField] private KeyCode shootButton;
 	[SerializeField] private LayerMask shootMask;
 	[SerializeField] private float lightTime;
+	[SerializeField] private float weaponAdjustSpeed;
 
 	private Weapon currentWeapon;
 	private float lastShootTime;
@@ -40,19 +41,22 @@ public class WeaponController : MonoBehaviour
 		if (gameManager.GameState == GameState.Running)
 		{
 			SwapWeapon();
-
-			if (Input.GetKey(shootButton))
-			{
-				Shoot();
-			}
-
+			UpdateShoot();
 			UpdateLight();
+		}
+	}
+
+	private void LateUpdate()
+	{
+		if (gameManager.GameState == GameState.Running)
+		{
+			UpdateWeaponRotation();
 		}
 	}
 
 	public void Shoot()
 	{
-		if (currentWeapon != null && currentWeapon.IsReloaded)
+		if (currentWeapon != null)
 		{
 			WeaponDefinition definition = currentWeapon.Definition; ;
 			float aimBound = Camera.main.pixelHeight * definition.Dispersion;
@@ -105,6 +109,37 @@ public class WeaponController : MonoBehaviour
 			int newWeaponIndex = MathUtilities.Modulo(currentWeaponIndex + step, availableWeapons.Count);
 
 			MountWeapon(availableWeapons[newWeaponIndex]);
+		}
+	}
+
+	private void UpdateWeaponRotation()
+	{
+		if (currentWeapon != null)
+		{
+			Vector3 screenPoint = new Vector3(Camera.main.pixelWidth / 2, Camera.main.scaledPixelHeight / 2, 0);
+			Ray ray = Camera.main.ScreenPointToRay(screenPoint);
+			RaycastHit[] hits = Physics.RaycastAll(ray, 100, shootMask);
+			Vector3 target;
+
+			if (hits.Length > 0)
+			{
+				target = hits[0].point;
+			}
+			else
+			{
+				target = ray.origin + ray.direction * 100;
+			}
+
+			Quaternion targetRotation = Quaternion.LookRotation(target - currentWeapon.transform.position);
+			currentWeapon.transform.rotation = Quaternion.Slerp(currentWeapon.transform.rotation, targetRotation, Time.deltaTime * weaponAdjustSpeed);
+		}
+	}
+
+	private void UpdateShoot()
+	{
+		if (Input.GetKey(shootButton) && currentWeapon.IsReloaded)
+		{
+			Shoot();
 		}
 	}
 

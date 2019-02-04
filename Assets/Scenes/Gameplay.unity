@@ -1142,6 +1142,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1024
   lightTime: 0.07
+  weaponAdjustSpeed: 10
 --- !u!114 &305342618
 MonoBehaviour:
   m_ObjectHideFlags: 0
