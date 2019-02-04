@@ -74,7 +74,7 @@ public class AimController : MonoBehaviour
 		}
 	}
 
-	private void OnWeaponChange(Weapon weapon)
+	private void OnWeaponChange(WeaponDefinition weapon)
 	{
 		if (canvasScaler != null)
 		{

@@ -1,12 +1,12 @@
-﻿using Cinemachine;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
 	[Header("References")]
-	[SerializeField] private List<CinemachineVirtualCamera> mainCameraList;
-	[SerializeField] private CinemachineVirtualCamera auxiliarCamera;
+	[SerializeField] private Camera camera;
+	[SerializeField] private List<VirtualCamera> mainCameraList;
+	[SerializeField] private VirtualCamera auxiliarCamera;
 	[Header("Settings")]
 	[SerializeField] private KeyCode auxiliarCameraButton;
 	[SerializeField] private KeyCode swapCameraButton;
@@ -57,33 +57,35 @@ public class CameraController : MonoBehaviour
 
 	private void RotateCamera()
 	{
-		CinemachineComposer composer = mainCameraList[currentCameraIndex].GetCinemachineComponent<CinemachineComposer>();
-		
-		if (composer != null)
+		Vector2 rotation = new Vector2(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+
+		foreach (var camera in mainCameraList)
 		{
-			float verticalRotation = Input.GetAxis("Mouse Y");
-			composer.m_TrackedObjectOffset.y += verticalRotation * rotationSpeed * Time.deltaTime;
+			camera.Rotate(rotation * Time.deltaTime);
 		}
 	}
 
 	private void ActivateCamera(int cameraIndex)
 	{
+		VirtualCamera activeCamera = null;
+
 		for (int i = 0; i < mainCameraList.Count; i++)
 		{
 			if (i == cameraIndex)
 			{
-				mainCameraList[i].Priority = 1;
+				activeCamera = mainCameraList[i];
 				currentCameraIndex = i;
-			}
-			else
-			{
-				mainCameraList[i].Priority = 0;
 			}
 		}
 
 		if (cameraIndex == -1)
 		{
-			auxiliarCamera.Priority = 1;
+			activeCamera = auxiliarCamera;
 		}
+
+		camera.transform.SetParent(activeCamera.CameraMount);
+		camera.transform.localPosition = Vector3.zero;
+		camera.transform.localRotation = Quaternion.identity;
+		camera.cullingMask = activeCamera.CullingMask;
 	}
 }
